@@ -5,14 +5,29 @@ const updateBookedColumn = require("./src/Components/updateBooked");
 const GetReservations = require("./src/Components/getReservations");
 const authRoutes = require("./src/Components/authRoutes");
 const tokenRoutes = require("./src/Components/decodeToken");
+require("dotenv").config();
+// console.log(process.env);
 
 const app = express();
-const PORT = 8800;
+const PORT = process.env.PORT || `${process.env.PORT}`;
 app.use(cors());
 app.use(express.json());
 
-// Event Routes
+// Set the view engine to EJS
+app.set("view engine", "ejs");
 
+// Specify the view directories
+app.set("views", __dirname + "/src/views");
+app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/src/assets"));
+
+// Home view route
+app.get("/", (req, res) => {
+  // console.log("Accessing home route");
+  res.render("home");
+});
+
+// Event Routes
 // Route to get all events
 app.get("/api/get", (req, res) => {
   db.query("SELECT * FROM events", (err, result) => {
@@ -130,7 +145,6 @@ app.delete("/api/delete/:id", (req, res) => {
 });
 
 // Ticket Routes (Using new methodology)
-
 // Route to create a ticket
 app.post("/api/reserveTicket", async (req, res) => {
   try {

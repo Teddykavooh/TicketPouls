@@ -83,7 +83,7 @@ const rawPassword = "TicketAdmin@1234";
 const role = true;
 
 // Hash the password before inserting it into the database
-bcrypt.hash(rawPassword, 10, async (hashError, hashedPassword) => {
+bcrypt.hash(rawPassword, 10, (hashError, hashedPassword) => {
   if (hashError) {
     console.error("Error hashing password:", hashError);
   } else {
@@ -94,7 +94,7 @@ bcrypt.hash(rawPassword, 10, async (hashError, hashedPassword) => {
     `;
 
     try {
-      await db.query(insertUserQuery);
+      db.query(insertUserQuery);
       console.log("User inserted successfully");
     } catch (insertError) {
       console.error("Error inserting user:", insertError);
