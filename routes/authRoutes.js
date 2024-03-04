@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("../../config/db");
+const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
 
       // Generate a JWT token for authentication
       const token = jwt.sign(
-        { email: result[0].email, role: result[0].role },
+        { email: result[0].email, role: result[0].admin_role },
         "TicketPouls",
       );
 

@@ -1,20 +1,30 @@
 const mysql = require("mysql");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "TicketPulse",
-  password: "",
-  database: "TicketPulse",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 });
 
 // Connect to the database
 db.connect(err => {
   if (err) {
     console.error("Error connecting to MySQL database:", err);
+    // console.log("DB_HOST:", process.env.DB_HOST);
+    // console.log("DB_USER:", process.env.DB_USER);
+    // console.log("PASSWORD:", process.env.PASSWORD);
+    // console.log("DATABASE:", process.env.DATABASE);
     return;
   }
   console.log("Connected to MySQL database");
+  // try {
+  //   createTables();
+  // } catch (error) {
+  //   console.log("Table creation failed.", error);
+  // }
 });
 
 // Create the "events" table
@@ -66,7 +76,7 @@ const createUsersTableQuery = `
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role BOOLEAN NOT NULL
+    admin_role BOOLEAN NOT NULL
   )
 `;
 db.query(createUsersTableQuery, (err, results) => {
@@ -89,7 +99,7 @@ bcrypt.hash(rawPassword, 10, (hashError, hashedPassword) => {
   } else {
     // Insert the user into the users table
     const insertUserQuery = `
-      INSERT IGNORE INTO users (email, password, role)
+      INSERT IGNORE INTO users (email, password, admin_role)
       VALUES ('${email}', '${hashedPassword}', ${role})
     `;
 

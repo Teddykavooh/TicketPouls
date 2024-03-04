@@ -1,4 +1,4 @@
-const db = require("../../config/db");
+const db = require("../config/db");
 
 // Function to update the booked column in the events table
 const updateBookedColumn = () => {

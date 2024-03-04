@@ -1,4 +1,4 @@
-const db = require("../../config/db");
+const db = require("../config/db");
 
 const GetReservations = (req, res) => {
   const event_id = req.params.eventId;

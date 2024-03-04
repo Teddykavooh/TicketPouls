@@ -1,10 +1,11 @@
 const express = require("express");
 const db = require("./config/db");
 const cors = require("cors");
-const updateBookedColumn = require("./src/Components/updateBooked");
-const GetReservations = require("./src/Components/getReservations");
-const authRoutes = require("./src/Components/authRoutes");
-const tokenRoutes = require("./src/Components/decodeToken");
+const updateBookedColumn = require("./routes/updateBooked");
+const GetReservations = require("./routes/getReservations");
+const authRoutes = require("./routes/authRoutes");
+const tokenRoutes = require("./routes/decodeToken");
+const createTables = require("./config/createTables");
 require("dotenv").config();
 // console.log(process.env);
 
@@ -17,9 +18,9 @@ app.use(express.json());
 app.set("view engine", "ejs");
 
 // Specify the view directories
-app.set("views", __dirname + "/src/views");
+app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/src/assets"));
+app.use(express.static(__dirname + "/public/assets"));
 
 // Home view route
 app.get("/", (req, res) => {
@@ -258,39 +259,6 @@ app.delete("/api/tickets/:id", async (req, res) => {
   }
 });
 
-// Route to get the sum of vipTickets and regularTickets by eventID and email
-// app.get("/api/getReservations/:eventId/:email", async (req, res) => {
-//   try {
-//     const event_id = req.params.eventId;
-//     const mail = req.params.email;
-
-//     // Modify the SQL query to calculate the sum of vipTickets and regularTickets
-//     const getReservationsByQuery = `
-//     SELECT COALESCE( SUM( tickets.vipTickets + tickets.regularTickets ), 0 ) AS totalReservations FROM tickets WHERE event = ? AND email = ?
-//     `;
-
-//     const result = await db.query(getReservationsByQuery, [event_id, mail]);
-
-//     const totalReservations =
-//       result.length > 0 ? result[0].totalReservations : 0;
-
-//     console.log("Result: ", result);
-//     console.log("Result[0]: ", result[0]);
-//     console.log("eventID: ", eventId);
-//     console.log("Email: ", email);
-//     console.log("id: ", typeof eventId);
-//     console.log("email type: ", typeof email);
-//     console.log("totalReservations: ", totalReservations);
-//     console.log("SQL Query: ", getReservationsByQuery);
-//     console.log("SQL Query: ", getReservationsByQuery, [eventId, email]);
-
-//     res.status(200).json({ totalReservations });
-//   } catch (error) {
-//     console.error("Error fetching reservations:", error);
-//     res.status(500).json({ error: "Error fetching reservations" });
-//   }
-// });
-
 app.get("/api/getReservations/:eventId/:email", GetReservations);
 
 // Authentication routes
@@ -301,4 +269,9 @@ app.use("/api/decodeToken", tokenRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
+  // try {
+  //   createTables;
+  // } catch (error) {
+  //   console.log("Table creation failed.", error);
+  // }
 });
