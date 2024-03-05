@@ -269,9 +269,4 @@ app.use("/api/decodeToken", tokenRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
-  // try {
-  //   createTables;
-  // } catch (error) {
-  //   console.log("Table creation failed.", error);
-  // }
 });
