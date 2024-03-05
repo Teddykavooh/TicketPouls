@@ -61,13 +61,15 @@ router.post("/login", async (req, res) => {
       }
 
       // Generate a JWT token for authentication
-      const token = jwt.sign(
+      const genToken = jwt.sign(
         { email: result[0].email, role: result[0].admin_role },
         "TicketPouls",
       );
 
-      console.log("User logged in successfully", token);
-      res.status(200).json({ message: "User logged in successfully", token });
+      // console.log("User logged in successfully", genToken);
+      res
+        .status(200)
+        .json({ message: "User logged in successfully", token: genToken });
     }
   });
 });

@@ -4,7 +4,7 @@ const tokenDecodingRouter = express.Router();
 
 tokenDecodingRouter.post("/decode", (req, res) => {
   const { token } = req.body;
-  console.log("Token: ", token);
+  // console.log("Token: ", token);
 
   if (!token) {
     return res.status(400).json({ error: "Token not provided" });
@@ -14,7 +14,7 @@ tokenDecodingRouter.post("/decode", (req, res) => {
   if (decodedToken) {
     res.status(200).json(decodedToken);
   } else {
-    console.log("Token2: ", token);
+    // console.log("Token2: ", token);
     res.status(401).json({ error: "Invalid token" });
   }
 });
